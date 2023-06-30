@@ -1,0 +1,36 @@
+services:
+  expense-tracker-backend:
+    build:
+      context: Expense-Tracker-Backend
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://mysql-db/expensetracker
+      DB_USERNAME: root
+      DB_PASSWORD: sharan@1311
+    depends_on:
+      - mysql_container
+
+  expense-tracker-frontend:
+    build:
+      context: expense-tracker-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+    depends_on:
+      - expense-tracker-backend
+
+  mysql_container:
+    image: mysql:8.0.33
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: expensetracker
+      MYSQL_ROOT_PASSWORD: sharan@1311
+      MYSQL_USER: root
+      MYSQL_PASSWORD: sharan@1311
+
+volumes:
+  dbdata:
+
